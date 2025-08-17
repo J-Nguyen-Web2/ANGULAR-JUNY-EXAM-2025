@@ -1,0 +1,17 @@
+
+  <!-- Theme -->
+  <h1 class="theme-title">{{ theme?.themeName }}</h1>
+  <h1 class="theme-title">{{ theme?.posts }}</h1>
+  <p class="theme-description">{{ theme?.created_at }}</p>
+
+  <!-- Posts -->
+  <section class="posts-section" >
+    <h2>Posts</h2>
+    <ul>
+        @for (post of posts; track post._id) {
+      <li >
+        <p>{{ post.text }}</p>
+      </li>
+    }
+    </ul>
+  </section>

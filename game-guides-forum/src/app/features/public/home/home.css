@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=EB+Garamond&display=swap');
+
+body {
+    margin: 0;
+    padding: 40px 20px;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #2b3951, #1c2541);
+    font-family: 'EB Garamond', serif;
+    color: #f4ecd8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+h1.title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    font-size: 4rem;
+    color: #f4ecd8;
+    position: relative;
+    margin-bottom: 1rem;
+    animation: glow 3s ease-in-out infinite alternate;
+    text-shadow:
+        0 0 5px #ffd700,
+        0 0 15px #ffec99,
+        0 0 20px #ffd700,
+        0 0 40px #ffec99;
+    letter-spacing: 2px;
+}
+
+@keyframes glow {
+    from {
+        text-shadow:
+            0 0 8px #ffd700,
+            0 0 20px #ffec99,
+            0 0 30px #ffd700,
+            0 0 50px #ffec99;
+    }
+
+    to {
+        text-shadow:
+            0 0 3px #f9d71c,
+            0 0 10px #f4e271,
+            0 0 15px #f9d71c,
+            0 0 25px #f4e271;
+    }
+}
+
+.image-container {
+    width: 100%;
+    max-width: 700px;
+    height: 350px;
+    margin: 30px 0;
+    background-color: #3c4a63;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.3s ease;
+}
+
+.image-container:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+}
+
+p.description {
+    font-size: 1.2rem;
+    max-width: 720px;
+    line-height: 1.8;
+    text-align: center;
+    text-indent: 0;
+    color: #f0e6c8;
+    margin-bottom: 2rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+span.highlight {
+    color: #ffd700;
+    font-weight: 700;
+    text-shadow: 0 0 8px #ffd700;
+}

@@ -1,0 +1,129 @@
+/* Remove default browser margin */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #1b264d; 
+  font-family: 'EB Garamond', serif;
+  color: #f4ecd8;
+}
+
+/* Main Profile Container */
+.profile-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 30px 40px;
+  background: rgba(44, 57, 81, 0.95);
+  border-radius: 20px;
+  border: 2px solid #ffd700;
+  box-shadow:
+    0 0 25px rgba(255, 215, 0, 0.4),
+    inset 0 0 20px rgba(27, 38, 77, 0.8);
+}
+
+/* Page Title */
+.profile-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.8rem;
+  font-weight: 900;
+  text-align: center;
+  color: #ffd700;
+  letter-spacing: 2px;
+  margin: 0;
+  text-shadow: 0 0 8px #ffd700cc, 0 0 20px #ffec99cc;
+}
+
+/* Username Style */
+.profile-username {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  color: #ffec99;
+  text-shadow: 0 0 6px #ffd700cc;
+}
+
+/* User Info */
+.user-info {
+  text-align: center;
+  font-size: 1.05rem;
+  margin-bottom: 20px;
+}
+
+.user-info p {
+  margin: 4px 0;
+}
+
+/* Divider */
+.profile-page hr {
+  border: none;
+  border-top: 1px solid rgba(255, 215, 0, 0.4);
+  margin: 20px 0;
+}
+
+/* Section Titles */
+.user-guides h3,
+.user-comments h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: #ffd700;
+  text-shadow: 0 0 6px #ffd700cc;
+  margin-bottom: 12px;
+}
+
+.user-guides ul,
+.user-comments ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.user-guides li,
+.user-comments li {
+  background: rgba(27, 38, 77, 0.85);
+  padding: 12px 15px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.user-guides li:hover,
+.user-comments li:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+}
+
+/* Links */
+.user-guides a,
+.user-comments a {
+  color: #ffec99;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.user-guides a:hover,
+.user-comments a:hover {
+  color: #ffd700;
+  text-shadow: 0 0 5px #ffd700cc;
+}
+
+/* Dates */
+.date {
+  display: block;
+  font-size: 0.85rem;
+  color: #cfc6a8;
+  margin-top: 4px;
+}
+
+/* Comments */
+.user-comments p {
+  margin: 0 0 5px;
+}
+
+.user-comments small {
+  font-size: 0.85rem;
+  color: #cfc6a8;
+}

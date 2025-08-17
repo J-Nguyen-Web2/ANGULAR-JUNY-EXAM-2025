@@ -1,0 +1,49 @@
+<body>
+
+  <div class="profile-page">
+
+    <!-- Page Title -->
+    <h1 class="profile-title">Profile Page</h1>
+    <h2 class="profile-username">{{ currentUser()?.username }}</h2>
+
+    <!-- User Info
+    <section class="user-info">
+      <p><strong>Email:</strong> {{ currentUser.email }}</p>
+      <p><strong>Telephone:</strong> {{ currentUser.telephone }}</p>
+    </section> -->
+
+    <hr>
+
+    <!-- TODO -->
+    <!-- User's Guides -->
+    <section class="user-guides">
+      <h3>My Guides</h3>
+      <!-- <ul>
+        <li *ngFor="let guide of currentUser.guides">
+          <a [routerLink]="['/guides', guide.id]">{{ guide.title }}</a>
+          <span class="date">{{ guide.createdAt | date }}</span>
+        </li>
+      </ul>
+      <p *ngIf="!currentUser.guides?.length">No guides yet.</p> -->
+    </section>
+
+    <hr>
+
+    <!-- User's Comments -->
+    <section class="user-comments">
+      <h3>My Comments</h3>
+      <!-- <ul>
+        <li *ngFor="let comment of currentUser.comments">
+          <p>{{ comment.text }}</p>
+          <small>
+            on <a [routerLink]="['/guides', comment.guideId]">{{ comment.guideTitle }}</a>
+            — {{ comment.createdAt | date }}
+          </small>
+        </li>
+      </ul>
+      <p *ngIf="!currentUser.comments?.length">No comments yet.</p> -->
+    </section>
+
+  </div>
+
+</body>

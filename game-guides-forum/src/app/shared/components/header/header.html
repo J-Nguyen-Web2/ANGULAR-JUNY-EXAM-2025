@@ -1,0 +1,31 @@
+
+
+  <header>
+    <!-- Left side: Logo + navigation -->
+    <div class="left-menu">
+      <div class="logo">
+        <a routerLink="/"><img src="irmensol.webp" alt="Logo"></a>
+      </div>
+      <nav>
+        <a routerLink="/home">Home</a>
+        <a routerLink="/catalog">Guides</a>
+        <a routerLink="/characters">Characters</a>
+        <a routerLink="/lore">Lore</a>
+      </nav>
+    </div>
+
+    <div class="right-menu">
+      <ul>
+        @if (isLoggedIn()) {
+          <a class="username" routerLink="/profile">{{this.currentUser()?.username}}</a>
+          <a routerLink="/create">Create a Guide</a>
+          <a (click)="logout()">Logout</a>
+        } @else {
+          <a routerLink="/login">Login</a>
+          <a routerLink="/register">Register</a>
+        }
+        
+      </ul>
+      
+    </div>
+  </header>

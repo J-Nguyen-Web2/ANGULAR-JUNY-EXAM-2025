@@ -1,0 +1,47 @@
+
+<body>
+
+<div class="login-container">
+    <div class="login-title">Tevyat Guides Login</div>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="email">Traveler Postname</label>
+            <input 
+                [class.input-error]="isEmailValid" 
+                type="text"
+                name="email"
+                id="email"
+                formControlName="email"
+                placeholder="Enter your name">
+        </div>
+
+        @if(isEmailValid){
+                <p class="error">
+                    {{emailErrorMsg}}
+                </p>
+            }
+            
+        <div class="form-group">
+            <label for="password">Secret Key</label>
+            <input 
+                [class.input-error]="isPasswordValid" 
+                type="password" 
+                name="password" 
+                id="password"  
+                formControlName="password"
+                placeholder="Enter your password">
+        </div>
+
+        @if  (isPasswordValid){
+                <p class="error">
+                    {{passwordErrorMsg}}
+                </p>
+                }
+
+        <button type="submit" class="login-button" [disabled]="!loginForm.valid">Enter Tevyat</button>
+    </form>
+    <div class="extra-links"><a routerLink="/register">Register</a>
+    </div>
+</div>
+
+</body>

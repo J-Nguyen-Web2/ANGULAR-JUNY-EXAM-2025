@@ -1,0 +1,45 @@
+
+<body>
+
+  <div class="form-container">
+    <h1 class="form-title">Create a New Guide</h1>
+
+    <form class="guide-form" [formGroup]="createForm" (ngSubmit)="onSubmit()">
+      
+      <div class="form-group">
+        <label for="themeName">Guide Title</label>
+        <input 
+                    [class.input-error]=""
+                    type="text" 
+                    name="themeName" 
+                    id="themeName"
+                    formControlName="themeName"
+                    placeholder="For which character is the guide ..">
+                    @if (isThemeNameValid) {                    
+                    <p class="error">
+                        {{themeNameErrorMsg}}
+                    </p>
+                }
+      </div>
+
+      <div class="form-group">
+        <label for="postText">Description</label>
+        <textarea  
+                    [class.input-error]=""
+                    id="postText" 
+                    name="postText" 
+                    placeholder="Strategies, combos, best teams, weapons, artifacts .."
+                    type="text"
+                    formControlName="postText"></textarea>
+                @if (isPostTextValid) {                    
+                    <p class="error">
+                        {{postTextErrorMsg}}
+                    </p>
+                }
+      </div>
+
+      <button type="submit" class="submit-btn">Create Guide</button>
+    </form>
+  </div>
+
+</body>

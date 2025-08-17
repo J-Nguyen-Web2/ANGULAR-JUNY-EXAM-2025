@@ -1,0 +1,77 @@
+:host {
+  background: #1b264d; /* deep navy */
+  
+}
+
+.catalog-container {
+  padding: 30px 20px;
+  background: #1b264d; /* deep navy */
+  color: #f4ecd8;
+  font-family: 'EB Garamond', serif;
+}
+
+.catalog-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 900;
+  font-size: 2.8rem;
+  color: #e6c86e; /* softer gold */
+  text-align: center;
+  margin-bottom: 30px;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+}
+
+.guides-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.guide-card {
+  background: #2e3b55; /* solid matte navy */
+  border-radius: 12px;
+  padding: 18px;
+  color: #f4ecd8;
+  font-family: 'EB Garamond', serif;
+  border: 1px solid rgba(230, 200, 110, 0.4); /* softer border */
+  transition: transform 0.15s ease, background-color 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.guide-card:hover {
+  transform: translateY(-4px);
+  background-color: #34425f; 
+}
+
+.guide-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #e6c86e;
+  margin: 0 0 10px;
+  text-shadow: none;
+}
+
+.guide-description {
+  font-size: 0.95rem;
+  color: #d8d3c4;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.view-guide-btn {
+  display: inline-block;
+  padding: 7px 12px;
+  font-size: 0.9rem;
+  color: #1b264d;
+  background: #d1b263; /* muted gold */
+  border-radius: 6px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.view-guide-btn:hover {
+  background: #c1a354; /* slightly darker muted gold */
+}

@@ -1,0 +1,68 @@
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #222;
+      color: white;
+      padding: 10px 40px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    /* Left & Right menu containers */
+    .left-menu,
+    .right-menu {
+      display: flex;
+      align-items: center;
+      gap: 40px; /* More space between menu items */
+    }
+
+    /* Logo style */
+    .logo img {
+      height: 45px;
+      width: auto;
+      border-radius: 4px;
+    }
+
+    /* Navigation menu */
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1rem;
+      letter-spacing: 0.5px;
+      padding: 8px 16px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      border-radius: 6px;
+    }
+
+    nav a:hover {
+      background-color: #444;
+      color: #ffcc00;
+    }
+
+    /* Right menu links */
+    .right-menu a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 6px 12px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      border-radius: 6px;
+    }
+
+    .right-menu a:hover {
+      background-color: #444;
+      color: #ffcc00;
+    }
+
+    .username {
+      font-weight: bold;
+      color: #ffcc00;
+    }

@@ -1,0 +1,11 @@
+<div class="catalog-container">
+  <h1 class="catalog-title">Guides Catalog</h1>
+
+  <div class="guides-grid">
+
+    @for (guideItem of themes$ | async; track guideItem._id) {
+      <app-catalog-item [theme]="guideItem"></app-catalog-item>
+      }
+    
+    </div>
+  </div>

@@ -1,0 +1,11 @@
+<div class="character-board">
+  <h2 class="board-title">Characters</h2>
+  <div class="characters-row">@for(char of characters ; track char) {
+    <div class="character-card">
+      <h3 class="character-name">{{ char.name }}</h3>
+      <div class="character-image" [style.background-image]="'url(' + char.image + ')'"></div>
+      <p class="character-element">Element: {{ char.element }}</p>
+      <p class="character-weapon">Weapon: {{ char.weapon }}</p>
+    </div>}
+  </div>
+</div>
