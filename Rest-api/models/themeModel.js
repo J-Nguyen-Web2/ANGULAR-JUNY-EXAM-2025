@@ -11,7 +11,8 @@ const themeSchema = new mongoose.Schema({
         ref: "User"
     }],
     userId: {
-        type: ObjectId,
+        type:  ObjectId,
+        // type: mongoose.Schema.Types.ObjectId, ref: 'User'
         ref: "User"
     },
     posts: [{

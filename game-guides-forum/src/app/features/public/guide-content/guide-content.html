@@ -1,17 +1,29 @@
+@if (themeGuide$ |async; as theme) {
+  
+<div class="theme-container">
 
-  <!-- Theme -->
-  <h1 class="theme-title">{{ theme?.themeName }}</h1>
-  <h1 class="theme-title">{{ theme?.posts }}</h1>
-  <p class="theme-description">{{ theme?.created_at }}</p>
+  <header class="theme-header">
+    <h1 class="theme-title">{{ theme.themeName }}</h1>
+    <p class="theme-meta">
+      Created by <strong>{{ theme.userId.username }}</strong> 
+      on {{ theme.created_at | date:'medium' }}
+      ({{ theme.created_at | timeAgo }})
+    </p>
+  </header>
 
-  <!-- Posts -->
-  <section class="posts-section" >
-    <h2>Posts</h2>
-    <ul>
-        @for (post of posts; track post._id) {
-      <li >
-        <p>{{ post.text }}</p>
+  <section class="posts-section">
+    <h2 class="posts-title">Posts</h2>
+    <ul class="posts-list">
+      @for (post of theme?.posts; track post._id) {
+      <li class="post-card">
+        <p class="post-text">{{ post.text }}</p>
+        <p class="post-meta">
+           <strong>{{ post.userId.username }}</strong> 
+          on {{ post.created_at | date:'medium' }}
+        </p>
       </li>
     }
     </ul>
   </section>
+</div>
+}

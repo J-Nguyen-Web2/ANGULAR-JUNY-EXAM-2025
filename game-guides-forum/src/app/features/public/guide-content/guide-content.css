@@ -1,0 +1,71 @@
+.theme-container {
+  background: #1b264d;
+  padding: 30px 20px;
+  color: #f4ecd8;
+  font-family: 'EB Garamond', serif;
+}
+
+.theme-header {
+  border-bottom: 1px solid rgba(230, 200, 110, 0.4);
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.theme-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 900;
+  font-size: 2.5rem;
+  color: #e6c86e;
+  text-shadow: 0 0 4px rgba(0,0,0,0.6);
+  margin: 0 0 10px;
+}
+
+.theme-meta {
+  font-size: 0.95rem;
+  color: #d8d3c4;
+}
+
+.posts-section {
+  margin-top: 20px;
+}
+
+.posts-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: #e6c86e;
+  margin-bottom: 15px;
+}
+
+.posts-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.post-card {
+  background: #2e3b55;
+  border-radius: 12px;
+  padding: 15px;
+  border: 1px solid rgba(230, 200, 110, 0.3);
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.post-card:hover {
+  transform: translateY(-3px);
+  background-color: #34425f;
+}
+
+.post-text {
+  font-size: 0.95rem;
+  color: #d8d3c4;
+  margin-bottom: 8px;
+}
+
+.post-meta {
+  font-size: 0.85rem;
+  color: #f4ecd8;
+  font-style: italic;
+}

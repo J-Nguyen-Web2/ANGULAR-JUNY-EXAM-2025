@@ -12,6 +12,7 @@ function getTheme(req, res, next) {
     const { themeId } = req.params;
 
     themeModel.findById(themeId)
+        .populate('userId')
         .populate({
             path : 'posts',
             populate : {

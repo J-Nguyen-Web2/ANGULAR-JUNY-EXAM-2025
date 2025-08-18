@@ -21,6 +21,10 @@ export class AuthService{
             this._isLoggedIn.set(true);
         }
     }
+
+    getUserById(id: string): Observable<User> {
+        return this.httpClient.get<User>(`${this.apiUrl}/users/${id}`)
+    }
     
     login(email: string, password: string): Observable<User> { 
         return this.httpClient.post<User>(`${this.apiUrl}/login`, {email, password},{
