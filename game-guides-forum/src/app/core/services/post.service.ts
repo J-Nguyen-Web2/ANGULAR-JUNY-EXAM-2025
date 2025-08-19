@@ -8,7 +8,7 @@ import { Post } from "../../models/post.model";
 })
 export class PostService {
     private getPostApiUrl = 'http://localhost:3000/api/posts?limit={0}';
-    private createPostApiUrl = 'http://localhost:3000/api/posts';
+    private apiUrl = 'http://localhost:3000/api/';
 
     constructor(private httpClient: HttpClient) {}
     
@@ -17,16 +17,37 @@ export class PostService {
     }
 
     getPostById(postId: string): Observable<Post> {
-        return this.httpClient.get<Post>(`this.getPostApiUrl/${postId}`); 
+        return this.httpClient.get<Post>(`this.apiUrl/posts/${postId}`); 
     }
 
-    createPost(userId: string, themeName: string, postText: string): Observable<Post> {
-        const body = JSON.stringify({ themeName, postText });
-        return this.httpClient.post<Post>(this.createPostApiUrl, body, { 
+    // createPost(postId: string, postText: string): Observable<Post> {
+    //     const body = JSON.stringify({ themeName, postText });
+    //     return this.httpClient.post<Post>(`this.createPostApiUrl`, body, { 
         
-            headers: {
-                'Content-Type': 'application/json' 
-            }
-        })
+    //         headers: {
+    //             'Content-Type': 'application/json' 
+    //         }
+    //     })
+    // }
+createPost(themeId: string, postText: string): Observable<Post> {
+  const body = { postText };
+  return this.httpClient.post<Post>(
+    `http://localhost:3000/api/themes/${themeId}`,
+    body,
+    { 
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: true 
+     });
     }
+    editPost(themeId: string, postId: string, text: string): Observable<Post> {
+    return this.httpClient.put<Post>(`${this.apiUrl}/themes/${themeId}/posts/${postId}`, { text }, {
+      withCredentials: true
+    });
+  }
+
+  deletePost(themeId: string, postId: string): Observable<void> {
+    return this.httpClient.delete<void>(`${this.apiUrl}/themes/${themeId}/posts/${postId}`, {
+      withCredentials: true
+    });
+  }
 }

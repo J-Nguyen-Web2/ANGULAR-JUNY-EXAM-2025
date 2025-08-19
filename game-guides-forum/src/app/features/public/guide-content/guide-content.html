@@ -1,29 +1,121 @@
-@if (themeGuide$ |async; as theme) {
-  
-<div class="theme-container">
+  <!-- с observables -->
+  <!-- @if (themeGuide$ |async; as theme) {
+  <div class="theme-container">
 
-  <header class="theme-header">
-    <h1 class="theme-title">{{ theme.themeName }}</h1>
-    <p class="theme-meta">
-      Created by <strong>{{ theme.userId.username }}</strong> 
-      on {{ theme.created_at | date:'medium' }}
-      ({{ theme.created_at | timeAgo }})
+    <header class="theme-header">
+      <h1 class="theme-title">{{ theme.themeName }}</h1>
+      <p class="theme-meta">
+        Created on {{ theme.created_at | date:'medium' }}
+        ({{ theme.created_at | timeAgo }})
+      </p>
+
+      <div class="theme-actions">
+        <button class="btn edit-btn">Edit Theme</button>
+        <button class="btn delete-btn">Delete Theme</button>
+      </div>
+    </header>
+
+    <section class="posts-section">
+      <h2 class="posts-title">Posts</h2>
+      <ul class="posts-list">
+        @for (post of theme?.posts; track post._id) {
+        <li class="post-card">
+          <p class="post-text">{{ post.text }}</p>
+          <p class="post-meta">
+            Published by <strong>{{ post.userId.username }}</strong>
+            on {{ post.created_at | date:'medium' }}
+          </p>
+
+          <div class="post-actions">
+            <button class="btn edit-btn">Edit</button>
+            <button class="btn delete-btn">Delete</button>
+          </div>
+        </li>
+        }
+      </ul> -->
+
+      
+      <!-- @if (authService.isLoggedIn()) {
+  <div class="comment-container">
+    <p class="comment-header">
+      <span class="comment-username">{{ authService.currentUser()?.username }}</span> comment:
     </p>
-  </header>
 
-  <section class="posts-section">
-    <h2 class="posts-title">Posts</h2>
-    <ul class="posts-list">
-      @for (post of theme?.posts; track post._id) {
-      <li class="post-card">
-        <p class="post-text">{{ post.text }}</p>
-        <p class="post-meta">
-           <strong>{{ post.userId.username }}</strong> 
-          on {{ post.created_at | date:'medium' }}
-        </p>
-      </li>
-    }
-    </ul>
-  </section>
-</div>
-}
+    <form class="comment-form" (ngSubmit)="addComment()">
+      <textarea
+        name="postText"
+        id="comment"
+        rows="6"
+        [(ngModel)]="newComment"
+        placeholder="Write your comment here..."
+        [class.input-error]="commentError">
+      </textarea> -->
+
+      <!-- @if (commentError) {
+      <p class="error-msg">Comment is required and must be at least 10 characters long.</p>
+      } 
+
+      <button type="submit" class="btn add-post-btn" [disabled]="!isCommentValid()">
+        Post Comment
+      </button>
+    </form>
+  </div>
+  }-->
+
+  <!-- със сигнали -->
+  @if (themeGuide()) {
+  <div class="theme-container">
+
+    <header class="theme-header">
+      <h1 class="theme-title">{{ themeGuide()?.themeName }}</h1>
+      <p class="theme-meta">
+        Created on {{ themeGuide()?.created_at | date:'medium' }}
+        <!-- ({{ themeGuide()?.created_at| timeAgo }}) -->
+      </p>
+
+      <div class="theme-actions">
+        <button class="btn edit-btn">Edit Theme</button>
+        <button class="btn delete-btn">Delete Theme</button>
+      </div>
+    </header>
+
+    <section class="posts-section">
+      <h2 class="posts-title">Posts</h2>
+      <ul class="posts-list">
+        @for (post of posts(); track post._id) {
+        <li class="post-card">
+          <p class="post-text">{{ post.text }}</p>
+          <p class="post-meta">
+            Published by <strong>{{ post.userId.username }}</strong>
+            on {{ post.created_at | date:'medium' }}
+          </p>
+
+          <div class="post-actions">
+            <button class="btn edit-btn">Edit</button>
+            <button class="btn delete-btn" (click)="deletePost(post._id)">Delete</button>
+          </div>
+        </li>
+        }
+      </ul>
+
+  @if (authService.isLoggedIn()) {
+    <div class="new-post">
+      <form [formGroup]="postForm" (ngSubmit)="addPost()">
+        <textarea
+          formControlName="postText"
+          rows="3"
+          placeholder="✨ Share your thoughts here..."
+          class="new-post-textarea">
+        </textarea>
+
+        @if (postForm.get('postText')?.touched && postForm.get('postText')?.invalid) {
+          <p class="error">Post is required and must be at least 10 characters.</p>
+        }
+
+        <button type="submit" class="btn add-post-btn" [disabled]="postForm.invalid">🚀 Lauch Post</button>
+      </form>
+    </div>
+  }
+    </section>
+  </div>
+  }
