@@ -84,6 +84,26 @@
       <ul class="posts-list">
         @for (post of posts(); track post._id) {
         <li class="post-card">
+          @if(editingPostId === post._id) {
+            <form [formGroup]="editForm" (ngSubmit)="editPost(post._id)">
+            <textarea
+            formControlName="editText"
+            rows="5"
+            placeholder="✨ Edit your post.."
+            class="edit-post-textarea"
+            name="editText"
+            ></textarea>
+
+            @if(editForm.get('editText')?.touched && editForm.get('editText')?.invalid){
+              <p class="error">Content is required and must be at least 10 characters</p>
+            }
+          
+          <div class="post-actions">
+            <button class="btn edit-btn" type="submit" [disabled]="editForm.invalid" (click)="editPost(post._id)">🛡️ Save</button>
+            <button class="btn delete-btn" type="button" (click)="cancelEdit()">🗡️ Discard</button>
+          </div>
+        </form>
+          } @else {
           <p class="post-text">{{ post.text }}</p>
           <p class="post-meta">
             Published by <strong>{{ post.userId.username }}</strong>
@@ -91,9 +111,10 @@
           </p>
 
           <div class="post-actions">
-            <button class="btn edit-btn">Edit</button>
+            <button class="btn edit-btn" (click)="startEditing(post._id, post.text)">Edit</button>
             <button class="btn delete-btn" (click)="deletePost(post._id)">Delete</button>
           </div>
+          }
         </li>
         }
       </ul>

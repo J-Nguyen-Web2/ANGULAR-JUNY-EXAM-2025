@@ -22,11 +22,17 @@ export class GuideContent implements OnInit{
   themeGuide = signal<Theme| null>(null);
   themeCreator = signal<string | null>(null);
 
+  editingTheme = false;
+  themeEditForm!: FormGroup;
   postForm!: FormGroup;
   editForm!: FormGroup;
 
   newPostText='';
   editingPostId: string | null = null
+  editingText:string= '';
+
+  
+  
 
 constructor(  
   protected authService: AuthService,  
@@ -35,7 +41,11 @@ constructor(
   private formBuilder: FormBuilder,
   private route: ActivatedRoute,
   private router: Router, 
-  ) { }
+  ) {
+    this.themeEditForm = this.formBuilder.group({
+      themeName:['', [Validators.required, Validators.minLength(3)]]
+    })
+   }
 
   ngOnInit(): void {
     this.postForm = this.formBuilder.group({
@@ -52,16 +62,38 @@ constructor(
     })
   }
 
+  startThemeEdit () {
+    if (this.themeGuide()?.userId !== this.authService.currentUser()?._id) return;
+    this.editingTheme = true;
+    this.themeEditForm.patchValue({
+      themeName: this.themeGuide()?.themeName
+    });
+  }
+  
+
+  saveTheme() {
+    if(this.themeEditForm.invalid) return;
+
+    // извикване на сървиса за save със spread
+    const updatedTheme = {
+      ...this.themeGuide(),
+      themeName:  this.themeEditForm.value.themeName
+    };
+    this.themeService.updateTheme(updatedTheme).subscribe(() => {
+      this.editingTheme = false;
+    });
+  }
+  
+  cancelThemeEdit() {
+    this.editingTheme = false;
+  }
+
   addPost() {
-    if(this.postForm.invalid){
-      return
-    }
+    if(this.postForm.invalid) return;
 
     const postText = this.postForm.value.postText;
     const themeId = this.themeGuide()?._id;
-    if(!themeId){
-      return
-    }
+    if(!themeId)return;
 
     this.postService.createPost(themeId, postText).subscribe({
       // прибаване на поста към сигнала на масива от постове
@@ -84,20 +116,60 @@ constructor(
     })
   }
 
-    deletePost(postId: string) {
-      const themeId = this.themeGuide()?._id;
-      if(!themeId) {
-        return
-      }
+  deletePost(postId: string) {
+    const themeId = this.themeGuide()?._id;
+    if(!themeId) return;
 
-      this.postService.deletePost(themeId, postId).subscribe({
-        next: () => {
-          this.posts.update(posts => posts.filter(p => p._id !== postId));
-        },
-        error: (err) => console.error('Failed to delete post', err)
-      })
-    }
-  
+    this.postService.deletePost(themeId, postId).subscribe({
+      next: () => {
+        this.posts.update(posts => posts.filter(p => p._id !== postId));
+      },
+      error: (err) => console.error('Failed to delete post', err)
+    });
+  }
+
+  startEditing(postId: string, currentText: string, postUserId: string) {
+    if(postUserId !== this.authService.currentUser()?._id) return;
+    this.editingPostId = postId;
+    this.editingText = currentText;
+    // this.editForm = this.formBuilder.group({
+    //   editText: [currentText, [Validators.required, Validators.minLength(10)]]
+    // })
+    
+  }
+
+  // updatePost(themeId: string){
+  //   if(!this.editingPostId) {
+  //     return
+  //   }
+  //   const newText = this.editForm.value.editText;
+    
+    
+  // }
+
+  cancelEdit() {
+    this.editingPostId = null;
+    this.editingText = '';
+  }
+
+editPost(postId: string) {
+    const themeId =this.themeGuide()?._id;
+    if(!themeId || !this.editingText.trim()) return;
+
+    this.postService.editPost(themeId, postId, this.editingText).subscribe({
+      next: (updatedPost) => { 
+        console.log('Update from backend' , updatedPost)
+        
+        this.posts.update(posts => 
+          posts.map(p => p._id === updatedPost._id ? updatedPost : p)
+        );
+       
+        this.editingPostId = null;
+        this.editingText = '';
+      },
+    error: (err) => console.error('Failed to edit post', err)
+    });
+  }
 
   // с observables
   //   ngOnInit(): void {

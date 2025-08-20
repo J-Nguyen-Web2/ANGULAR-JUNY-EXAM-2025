@@ -40,9 +40,7 @@ createPost(themeId: string, postText: string): Observable<Post> {
      });
     }
     editPost(themeId: string, postId: string, text: string): Observable<Post> {
-    return this.httpClient.put<Post>(`${this.apiUrl}/themes/${themeId}/posts/${postId}`, { text }, {
-      withCredentials: true
-    });
+    return this.httpClient.put<Post>(`${this.apiUrl}/themes/${themeId}/posts/${postId}`, { postText: text });
   }
 
   deletePost(themeId: string, postId: string): Observable<void> {
