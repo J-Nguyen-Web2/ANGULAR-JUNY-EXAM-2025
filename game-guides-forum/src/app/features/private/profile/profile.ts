@@ -11,9 +11,10 @@ import { AuthService } from '../../../core/services/auth.services';
 })
 export class Profile {
     
-  protected authService = inject(AuthService);
+  public authService = inject(AuthService);
   private router = inject(Router);
 
+  public currentUser = this.authService.currentUser;
   readonly isLoggedIn = this.authService.isLoggedIn;
-  readonly currentUser = this.authService.currentUser;
+  
 }
