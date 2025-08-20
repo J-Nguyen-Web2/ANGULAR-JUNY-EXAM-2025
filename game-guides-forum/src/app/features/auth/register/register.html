@@ -33,6 +33,15 @@
                         {{ emailErrorMsg }}
                     </p>
                 }
+                
+                
+
+        @if  (errorMessage()){
+                <p class="error">
+                    {{errorMessage()}}
+                </p>
+                }
+
 
         <div class="form-group">
             <label for="tel">Echo Crystal (Phone)</label>

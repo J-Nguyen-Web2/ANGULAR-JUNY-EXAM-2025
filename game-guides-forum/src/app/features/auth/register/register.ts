@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, effect, inject } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.services';
+import { ErrorService } from '../../../core/services/error.service';
 
 @Component({
   selector: 'app-register',
@@ -14,10 +15,20 @@ export class Register {
   private authService = inject(AuthService);
   private router = inject(Router);
   private formBuilder = inject(FormBuilder);
+  private errorService = inject(ErrorService)
+
+  errorMessage = computed(() => this.errorService.error());
 
   registerForm: FormGroup;
 
   constructor(){
+    effect((): void => { // в комнинация със сигнала computed
+      const msg = this.errorMessage();
+      if(msg){
+        console.log('Error:', msg)
+      }
+    })
+
     this.registerForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(5)]],
       email: ['', [Validators.required, Validators.email]],

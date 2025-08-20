@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { NotFound } from './shared/components/not-found/not-found';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
 
@@ -28,11 +29,13 @@ export const routes: Routes = [
     },
     {
         path:'profile',
-        loadComponent:() => import('./features/private/profile/profile').then(component => component.Profile)
+        loadComponent:() => import('./features/private/profile/profile').then(component => component.Profile),
+        canActivate: [authGuard]
     },
     {
         path:'create',
-        loadComponent:() => import('./features/private/create-guide/create-guide').then(component => component.CreateGuide)
+        loadComponent:() => import('./features/private/create-guide/create-guide').then(component => component.CreateGuide),
+        canActivate: [authGuard]
     },
     {
         path:'catalog',

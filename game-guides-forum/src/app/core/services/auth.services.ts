@@ -1,6 +1,6 @@
 import { Injectable, signal } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { map, Observable, tap } from "rxjs";
+import { catchError, map, Observable, tap, throwError } from "rxjs";
 import { User } from "../../models";
 
 @Injectable({ 
@@ -30,6 +30,9 @@ export class AuthService{
         return this.httpClient.post<User>(`${this.apiUrl}/login`, {email, password},{
             withCredentials: true 
         }).pipe(
+            catchError((err) => {
+                return throwError(() => err)
+            }),
             tap(user => {
                 this._currentUser.set(user);
                 this._isLoggedIn.set(true); 

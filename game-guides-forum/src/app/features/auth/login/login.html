@@ -3,6 +3,11 @@
 
 <div class="login-container">
     <div class="login-title">Tevyat Guides Login</div>
+    @if(toastMessage()){
+        <div class="toast">
+            {{toastMessage()}}
+        </div>
+    }
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
             <label for="email">Traveler Postname</label>
@@ -35,6 +40,11 @@
         @if  (isPasswordValid){
                 <p class="error">
                     {{passwordErrorMsg}}
+                </p>
+                }
+        @if  (errorMessage()){
+                <p class="error">
+                    {{errorMessage()}}
                 </p>
                 }
 
