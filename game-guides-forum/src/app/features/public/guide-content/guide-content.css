@@ -16,7 +16,12 @@
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
 }
 
-.theme-header {
+.theme-header .new-post-textarea{
+  width: 100%;
+  max-width: 600px;
+  font-size: 1.2rem;
+  padding: 10px;
+  box-sizing:border-box;
   border-bottom: 1px solid rgba(230, 200, 110, 0.4);
   padding-bottom: 15px;
   margin-bottom: 20px;
@@ -51,11 +56,13 @@
 }
 
 .post-card {
+  width: 100%;
+  max-width: 800px;
   background: #34425f;
   border: 1px solid rgba(230, 200, 110, 0.3);
   border-radius: 12px;
   padding: 15px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   transition: background 0.2s ease;
 }
 
@@ -132,6 +139,7 @@
   resize: vertical;
   padding: 12px;
   font-size: 1rem;
+  padding: 10px;
   border: 1px solid rgba(230, 200, 110, 0.5);
   border-radius: 8px;
   background: #ced6f1;

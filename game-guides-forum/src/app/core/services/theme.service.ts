@@ -26,4 +26,16 @@ export class ThemeService {
             withCredentials: true,
         });
     }
+
+    updateTheme(theme: Theme): Observable<Theme> {
+        return this.httpClient.put<Theme>(`${this.apiUrl}/themes/${theme._id}`, { themeName: theme.themeName},
+            {withCredentials: true}
+        );
+    }
+    
+    deleteTheme(themeId: string): Observable<void> {
+        return this.httpClient.delete<void>(`${this.apiUrl}/themes/${themeId}`,
+            {withCredentials: true}
+        )
+    }
 }

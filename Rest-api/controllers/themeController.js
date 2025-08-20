@@ -45,9 +45,28 @@ function subscribe(req, res, next) {
         .catch(next);
 }
 
+function deleteTheme(req, res, next) {
+
+    console.log('delete theme called, params', req.params, 'user:', req.user)
+    const { themeId } = req.params;
+    const userId = req.user._id;
+    
+    themeModel.findById(themeId)
+        .then(theme => {
+            if(!theme) return res.status(404).json({ message: 'Theme not found'});
+            if (theme.userId.toString() !== userId.toString()) {
+                return res.status(403).json({ message: 'Not allowed to delete this theme!'})
+            }
+            return theme.remove()
+            .then(() => res.status(200).json({message: 'Theme deleted succesfully'}))
+        })
+        .catch(next); // за errors
+}
+
 module.exports = {
     getThemes,
     createTheme,
     getTheme,
     subscribe,
+    deleteTheme
 }

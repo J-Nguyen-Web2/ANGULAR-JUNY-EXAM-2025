@@ -1,142 +1,88 @@
-  <!-- с observables -->
-  <!-- @if (themeGuide$ |async; as theme) {
-  <div class="theme-container">
+<!-- със сигнали -->
 
-    <header class="theme-header">
-      <h1 class="theme-title">{{ theme.themeName }}</h1>
-      <p class="theme-meta">
-        Created on {{ theme.created_at | date:'medium' }}
-        ({{ theme.created_at | timeAgo }})
-      </p>
+<div class="theme-container">
 
+  <header class="theme-header">
+    @if (editingTheme && isThemeOwner()) {
+    <form [formGroup]="themeEditForm" (ngSubmit)="saveTheme()">
+      <input type="text" formControlName="themeName" class="new-post-textarea" placeholder="✨ Edit theme title.." />
+      @if(themeEditForm.get('themeName')?.touched && themeEditForm.get('themeName')?.invalid){
+      <p class="error">Theme title is required and must be at least 3 characters</p>
+      }
+      @if(isThemeOwner()){
       <div class="theme-actions">
-        <button class="btn edit-btn">Edit Theme</button>
-        <button class="btn delete-btn">Delete Theme</button>
+        <button class="btn edit-btn" type="submit" [disabled]="themeEditForm.invalid">Save</button>
+        <button class="btn delete-btn" type="button" (click)="cancelThemeEdit()">Discard</button>
       </div>
-    </header>
-
-    <section class="posts-section">
-      <h2 class="posts-title">Posts</h2>
-      <ul class="posts-list">
-        @for (post of theme?.posts; track post._id) {
-        <li class="post-card">
-          <p class="post-text">{{ post.text }}</p>
-          <p class="post-meta">
-            Published by <strong>{{ post.userId.username }}</strong>
-            on {{ post.created_at | date:'medium' }}
-          </p>
-
-          <div class="post-actions">
-            <button class="btn edit-btn">Edit</button>
-            <button class="btn delete-btn">Delete</button>
-          </div>
-        </li>
-        }
-      </ul> -->
-
-      
-      <!-- @if (authService.isLoggedIn()) {
-  <div class="comment-container">
-    <p class="comment-header">
-      <span class="comment-username">{{ authService.currentUser()?.username }}</span> comment:
+    }
+    </form>
+    } @else {
+    <h1 class="theme-title">{{ themeGuide()?.themeName }}</h1>
+    <p class="theme-meta">
+      Created on {{ themeGuide()?.created_at | date:'medium' }}
+      <!-- ({{ themeGuide()?.created_at| timeAgo }}) -->
     </p>
 
-    <form class="comment-form" (ngSubmit)="addComment()">
-      <textarea
-        name="postText"
-        id="comment"
-        rows="6"
-        [(ngModel)]="newComment"
-        placeholder="Write your comment here..."
-        [class.input-error]="commentError">
-      </textarea> -->
-
-      <!-- @if (commentError) {
-      <p class="error-msg">Comment is required and must be at least 10 characters long.</p>
-      } 
-
-      <button type="submit" class="btn add-post-btn" [disabled]="!isCommentValid()">
-        Post Comment
-      </button>
-    </form>
-  </div>
-  }-->
-
-  <!-- със сигнали -->
-  @if (themeGuide()) {
-  <div class="theme-container">
-
-    <header class="theme-header">
-      <h1 class="theme-title">{{ themeGuide()?.themeName }}</h1>
-      <p class="theme-meta">
-        Created on {{ themeGuide()?.created_at | date:'medium' }}
-        <!-- ({{ themeGuide()?.created_at| timeAgo }}) -->
-      </p>
-
+      @if (isThemeOwner()) {
       <div class="theme-actions">
-        <button class="btn edit-btn">Edit Theme</button>
-        <button class="btn delete-btn">Delete Theme</button>
+        <button class="btn edit-btn" [disabled]="!isThemeOwner()" (click)="startThemeEdit()">Edit Theme Name</button>
       </div>
-    </header>
+      }
+    }
+  </header>
 
-    <section class="posts-section">
-      <h2 class="posts-title">Posts</h2>
-      <ul class="posts-list">
-        @for (post of posts(); track post._id) {
-        <li class="post-card">
-          @if(editingPostId === post._id) {
-            <form [formGroup]="editForm" (ngSubmit)="editPost(post._id)">
-            <textarea
-            formControlName="editText"
-            rows="5"
-            placeholder="✨ Edit your post.."
-            class="edit-post-textarea"
-            name="editText"
-            ></textarea>
+  <section class="posts-section">
+    <h2 class="posts-title">Posts</h2>
+    <ul class="posts-list">
+      @for (post of posts(); track post._id) {
+      <li class="post-card">
+        @if(editingPostId === post._id) {
+        <form [formGroup]="editForm" (ngSubmit)="editPost(post._id)">
+          <textarea formControlName="editText" rows="5" placeholder="✨ Edit your post.." class="edit-post-textarea"
+            name="editText"></textarea>
 
-            @if(editForm.get('editText')?.touched && editForm.get('editText')?.invalid){
-              <p class="error">Content is required and must be at least 10 characters</p>
-            }
-          
+          @if(editForm.get('editText')?.touched && editForm.get('editText')?.invalid){
+          <p class="error">Content is required and must be at least 10 characters</p>
+          }
+
           <div class="post-actions">
-            <button class="btn edit-btn" type="submit" [disabled]="editForm.invalid" (click)="editPost(post._id)">🛡️ Save</button>
+            <button class="btn edit-btn" type="submit" [disabled]="editForm.invalid" (click)="editPost(post._id)">🛡️
+              Save</button>
             <button class="btn delete-btn" type="button" (click)="cancelEdit()">🗡️ Discard</button>
           </div>
         </form>
-          } @else {
-          <p class="post-text">{{ post.text }}</p>
-          <p class="post-meta">
-            Published by <strong>{{ post.userId.username }}</strong>
-            on {{ post.created_at | date:'medium' }}
-          </p>
-
+        } @else {
+        <p class="post-text">{{ post.text }}</p>
+        <p class="post-meta">
+          Published by <strong>{{ post.userId.username }}</strong>
+          on {{ post.created_at | date:'medium' }}
+        </p>
+          @if(isPostOwner(post)){
           <div class="post-actions">
-            <button class="btn edit-btn" (click)="startEditing(post._id, post.text)">Edit</button>
-            <button class="btn delete-btn" (click)="deletePost(post._id)">Delete</button>
+            <button class="btn edit-btn" (click)="startEditing(post._id, post.text, post.userId._id)">Edit</button>
+            <button class="btn delete-btn" [disabled]="post.userId._id !== authService.currentUser()?._id"
+              (click)="deletePost(post._id)">Delete</button>
           </div>
           }
-        </li>
         }
-      </ul>
+      </li>
+      }
+    </ul>
 
-  @if (authService.isLoggedIn()) {
+    @if (authService.isLoggedIn()) {
     <div class="new-post">
       <form [formGroup]="postForm" (ngSubmit)="addPost()">
-        <textarea
-          formControlName="postText"
-          rows="3"
-          placeholder="✨ Share your thoughts here..."
+        <textarea formControlName="postText" rows="3" placeholder="✨ Share your thoughts here..."
           class="new-post-textarea">
         </textarea>
 
         @if (postForm.get('postText')?.touched && postForm.get('postText')?.invalid) {
-          <p class="error">Post is required and must be at least 10 characters.</p>
+        <p class="error">Post is required and must be at least 10 characters.</p>
         }
 
         <button type="submit" class="btn add-post-btn" [disabled]="postForm.invalid">🚀 Lauch Post</button>
       </form>
     </div>
-  }
-    </section>
-  </div>
-  }
+    }
+  </section>
+</div>

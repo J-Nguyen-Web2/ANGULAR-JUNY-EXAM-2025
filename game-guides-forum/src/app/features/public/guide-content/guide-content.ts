@@ -13,104 +13,131 @@ import { TimeAgoPipe } from '../../../shared/pipe/time-ago.pipe';
   templateUrl: './guide-content.html',
   styleUrl: './guide-content.css'
 })
-export class GuideContent implements OnInit{  
-  
+export class GuideContent implements OnInit {
+
   // themeGuide$!: Observable<Theme>;
   // themeCreator$!: Observable<User>
   // posts$?: Observable<Post[]>;
+  // // themeCreator = signal<string | null>(null);
   posts = signal<Post[]>([]);
-  themeGuide = signal<Theme| null>(null);
-  themeCreator = signal<string | null>(null);
+  themeGuide = signal<Theme | null>(null);
+
 
   editingTheme = false;
   themeEditForm!: FormGroup;
   postForm!: FormGroup;
   editForm!: FormGroup;
 
-  newPostText='';
+  newPostText = '';
   editingPostId: string | null = null
-  editingText:string= '';
+  editingText: string = '';
 
-  
-  
-
-constructor(  
-  protected authService: AuthService,  
-  private themeService: ThemeService,
-  private postService: PostService,
-  private formBuilder: FormBuilder,
-  private route: ActivatedRoute,
-  private router: Router, 
+  constructor(
+    protected authService: AuthService,
+    private themeService: ThemeService,
+    private postService: PostService,
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
   ) {
     this.themeEditForm = this.formBuilder.group({
-      themeName:['', [Validators.required, Validators.minLength(3)]]
+      themeName: ['', [Validators.required, Validators.minLength(3)]]
     })
-   }
+  }
 
   ngOnInit(): void {
     this.postForm = this.formBuilder.group({
-      postText: ['',[Validators.required, Validators.minLength(10)]]
+      postText: ['', [Validators.required, Validators.minLength(10)]]
     });
+
+    this.editForm = this.formBuilder.group({
+      editText: ['', [Validators.required, Validators.minLength(10)]]
+    })
 
     this.route.paramMap.subscribe(params => {
       const themeId = params.get('themeId')!;
       this.themeService.getThemeById(themeId).subscribe(theme => {
         this.themeGuide.set(theme);
+        console.log(theme.userId)
+        console.log(this.authService.currentUser()?._id)
         this.posts.set(theme.posts ?? []);
-        // this.themeCreator.set(theme.userId)
       })
     })
   }
 
-  startThemeEdit () {
-    if (this.themeGuide()?.userId !== this.authService.currentUser()?._id) return;
+  // --------- THEME -----------
+  startThemeEdit() {
+    if (!this.isThemeOwner()) return;
     this.editingTheme = true;
     this.themeEditForm.patchValue({
       themeName: this.themeGuide()?.themeName
     });
   }
-  
 
   saveTheme() {
-    if(this.themeEditForm.invalid) return;
+    if (this.themeEditForm.invalid || !this.themeGuide()) return;
 
     // извикване на сървиса за save със spread
     const updatedTheme = {
-      ...this.themeGuide(),
-      themeName:  this.themeEditForm.value.themeName
+      ...this.themeGuide()!,
+      themeName: this.themeEditForm.value.themeName
     };
-    this.themeService.updateTheme(updatedTheme).subscribe(() => {
-      this.editingTheme = false;
+    this.themeService.updateTheme(updatedTheme).subscribe({
+      next: (theme) => {
+        this.themeGuide.set(theme);
+        this.editingTheme = false;
+      },
+      error: (err) => console.error('Failed to update', err)
     });
   }
-  
+
+  // server-a не позволява
+  deleteTheme() {
+    const themeId = this.themeGuide()?._id
+    if (!themeId) return;
+
+    if (!this.isThemeOwner()) return;
+
+    this.themeService.deleteTheme(themeId).subscribe({
+      next: () => {
+        this.router.navigate(['/themes']);
+      },
+      error: (err) => console.error('Failed to delete theme', err)
+    });
+  }
+
   cancelThemeEdit() {
     this.editingTheme = false;
   }
 
+  isThemeOwner(): boolean {
+    const currentUserId = this.authService.currentUser()?._id;
+    const themeUserId = this.themeGuide()?.userId?._id || this.themeGuide()?.userId;
+    return themeUserId === currentUserId;
+  }
+  
+  // -------- POSTS ---------
   addPost() {
-    if(this.postForm.invalid) return;
+    if (this.postForm.invalid) return;
 
     const postText = this.postForm.value.postText;
     const themeId = this.themeGuide()?._id;
-    if(!themeId)return;
+    if (!themeId) return;
 
     this.postService.createPost(themeId, postText).subscribe({
       // прибаване на поста към сигнала на масива от постове
       // next: (createdPost) => {        
       //   this.posts.update(posts =>[...posts, createdPost]);
-      //   console.log(createdPost)
       //   this.postForm.reset();
       // },
 
       // refecth понеже не зарежда веднага новия пост
-      next: () => { 
+      next: () => {
         this.themeService.getThemeById(themeId).subscribe(theme => {
           this.themeGuide.set(theme);
           this.posts.set(theme.posts ?? [])
         });
         this.postForm.reset();
-
       },
       error: (err) => console.error('Failed to create post:', err)
     })
@@ -118,7 +145,7 @@ constructor(
 
   deletePost(postId: string) {
     const themeId = this.themeGuide()?._id;
-    if(!themeId) return;
+    if (!themeId) return;
 
     this.postService.deletePost(themeId, postId).subscribe({
       next: () => {
@@ -129,94 +156,51 @@ constructor(
   }
 
   startEditing(postId: string, currentText: string, postUserId: string) {
-    if(postUserId !== this.authService.currentUser()?._id) return;
+    if (postUserId !== this.authService.currentUser()?._id) return;
     this.editingPostId = postId;
     this.editingText = currentText;
-    // this.editForm = this.formBuilder.group({
-    //   editText: [currentText, [Validators.required, Validators.minLength(10)]]
-    // })
-    
-  }
+    this.editForm.patchValue({ editText: currentText })
 
-  // updatePost(themeId: string){
-  //   if(!this.editingPostId) {
-  //     return
-  //   }
-  //   const newText = this.editForm.value.editText;
-    
-    
-  // }
+  }
 
   cancelEdit() {
     this.editingPostId = null;
     this.editingText = '';
   }
 
-editPost(postId: string) {
-    const themeId =this.themeGuide()?._id;
-    if(!themeId || !this.editingText.trim()) return;
+  editPost(postId: string) {
+    const themeId = this.themeGuide()?._id;
+    if (!themeId) return;
 
-    this.postService.editPost(themeId, postId, this.editingText).subscribe({
-      next: (updatedPost) => { 
-        console.log('Update from backend' , updatedPost)
-        
-        this.posts.update(posts => 
+    const newText = this.editForm.value.editText
+    if (!newText?.trim()) return;
+
+    this.postService.editPost(themeId, postId, newText).subscribe({
+      next: (updatedPost) => {
+        this.posts.update(posts =>
           posts.map(p => p._id === updatedPost._id ? updatedPost : p)
         );
-       
+        
+            window.location.reload()
+          ;
+
         this.editingPostId = null;
         this.editingText = '';
       },
-    error: (err) => console.error('Failed to edit post', err)
+      error: (err) => console.error('Failed to edit post', err)
     });
   }
 
-  // с observables
-  //   ngOnInit(): void {
-  //     this.themeGuide$ = this.route.paramMap.pipe( // за да може да се работи с observeble понеже е async
-  //       switchMap( params => { // понеже е async, а са два Observeble-a (themeId) и theme$ 
-  //       const themeId = params.get('themeId')!; // switchMap се unsuscribe от първия
-  //       return  this.themeService.getThemeById(themeId); // за да се subscribe за втория
-  //       })
-  //     );
-          
+  isPostOwner(post: Post): boolean {
+    const currentUserId = this.authService.currentUser()?._id;
+    if(!currentUserId) return false;
 
-  //   this.posts$ = this.themeGuide$.pipe(
-  //     map(theme => theme.posts ?? [])
-  //   )
-
-  //   this.themeCreator$ = this.themeGuide$.pipe(
-  //     map( theme => theme.userId)
-  //   )
-
-  //   this.postForm = this.formBuilder.group({
-  //     postText: ['',[Validators.required, Validators.minLength(10)]]
-  //   });
-  // }
-
-  //   addPost() {
-  //     if(this.postForm.invalid){
-  //       return;
-  //     }
+    const postUserId = typeof  post.userId === 'string'
+    ? post.userId
+    : post.userId?._id;
     
+    console.log(postUserId === currentUserId)
 
-  //   const postText = this.postForm.value.postText;
-
-  //    this.themeGuide$.pipe(
-  //     switchMap(theme => this.postService.createPost(theme._id, postText))
-  //   ).subscribe({
-  //     next: (createdPost) => {
-  //       console.log('Post created:', createdPost);
-
-  //       this.postForm.reset();
-
-  //       this.posts$ = this.themeGuide$.pipe(
-  //         map(theme => theme.posts ?? [])
-  //       );
-  //     },
-  //     error: (err) => {
-  //       console.error('Failed to create post:', err);
-  //     }
-  //   });
-  // }
+    return postUserId === currentUserId;
+  }
 }
