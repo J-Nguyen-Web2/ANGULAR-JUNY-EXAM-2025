@@ -1,4 +1,5 @@
 A Single Page Application (SPA) built with Angular (front-end) and MongoDB (back-end)
+
 Instructions to run the application using VS Code
 
 
