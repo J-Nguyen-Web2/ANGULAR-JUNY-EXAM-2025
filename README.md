@@ -8,10 +8,15 @@ Frontend: Angular SPA (game guide forum) In a second terminal: cd game-guides-fo
 Folder Structure
 
 /src 
+
 /app 
+
 /core - services,guards,interceptors
+
 /features - auth (login, register), private (create-guide, profile), public(catalog,catalog-item,character-board,guide-content,home,lore)
+
 /models - post, user, theme, index.ts 
+
 /shared - components (footer, header, not-found), pipes
 
 Users created:
