@@ -16,6 +16,7 @@ Folder Structure
 
 Users created:
 eternity@mail.com / Shogun
+
 yae@mail.com / FoxyLady
 
 Registration triggers immediate login, withCredentials: true
