@@ -15,6 +15,7 @@ Folder Structure
 /shared - components (footer, header, not-found), pipes
 
 Users created:
+
 eternity@mail.com / Shogun
 
 yae@mail.com / FoxyLady
