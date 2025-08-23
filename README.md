@@ -48,6 +48,9 @@ CRU operations for Theme (rest-api doesn't provide delete for themes)
 
 restrictions for crud operations only for owners and logged users
 
+subscription and unsubscribe for other user/s guides
+profile page shows guides created by the user and personal information that can be edited
+
 
 The Code is for Educational purpose
 
